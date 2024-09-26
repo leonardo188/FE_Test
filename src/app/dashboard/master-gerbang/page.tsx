@@ -5,7 +5,6 @@ import Pagination from "@/components/pagination";
 import Table from "@/components/table";
 import { mdiMagnify, mdiPlusBoxOutline } from "@mdi/js";
 import Icon from "@mdi/react";
-import { id } from "date-fns/locale";
 import { useEffect, useState } from "react";
 
 export default function MasterGerbang() {
@@ -17,6 +16,13 @@ export default function MasterGerbang() {
   }
 
   const listRows = [5, 25, 50, 100]
+  const [detailData, setDetailData] = useState<{ 
+    total_pages: number;
+    current_pages: number; 
+  }>({
+    total_pages: 0,
+    current_pages: 0
+  })
   const [data, setData] = useState<DataRow[]>([])
   const [search, setSearch] = useState('')
 
@@ -36,6 +42,10 @@ export default function MasterGerbang() {
         }));
 
         setData(newData)
+        setDetailData({
+          total_pages: response.data.total_pages,
+          current_pages: response.data.current_page
+        })
       }
     } catch (error) {
       console.error('Login error:', error)
@@ -71,7 +81,7 @@ export default function MasterGerbang() {
         <div className="mt-2">
           <Table data={data} />
         </div>
-        <Pagination totalEntries={data.length} entriesPerPageOptions={listRows} />
+        <Pagination totalPage={detailData.total_pages ?? 0} currentPage={detailData.current_pages ?? 0} row={listRows} onPageChange={() => {}} onRowChange={() => {}} />
       </div>
     </div>
   );

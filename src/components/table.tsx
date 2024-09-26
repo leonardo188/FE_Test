@@ -15,6 +15,7 @@ const Table = <T extends Record<string, any>>({ data }: TableProps<T>) => {
         <tr>
           {Object.keys(data[0]).map((header) => (
             <th
+              className='text-left items-start'
               key={header}
               style={{
                   border: '1px solid #ddd',
